@@ -335,10 +335,10 @@ export function aggregatePerformanceData(records: PerformanceRecord[]): Aggregat
     }
   });
 
-  const byDay = Array.from(dailyStats.values()).map(s => ({ ...s, avgRend: s.validCount > 0 ? s.avgRend / s.validCount : null }));
+  const byDay = Array.from(dailyStats.values()).map(s => ({ ...s, avgRend: (s.validCount > 0 ? s.avgRend / s.validCount : null) as number | null }));
   const byMonth = Array.from(monthlyOperatorStats.entries()).map(([key, s]) => {
     const [month, operateur] = key.split('_');
-    return { month, operateur, avgRend: s.count > 0 ? s.sum / s.count : null, recordCount: s.records };
+    return { month, operateur, avgRend: (s.count > 0 ? s.sum / s.count : null) as number | null, recordCount: s.records };
   });
   
   const totalRecords = records.length;
