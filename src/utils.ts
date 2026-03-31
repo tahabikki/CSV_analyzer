@@ -309,7 +309,7 @@ export function aggregatePerformanceData(records: PerformanceRecord[]): Aggregat
       const rendValue = extractRendValue(record.rend);
       if (rendValue !== null) {
         daily.validCount += 1;
-        daily.avgRend += rendValue;
+        (daily as any).avgRend += rendValue;
         totalValidRend += rendValue;
         totalValidCount += 1;
         if (!monthlyStats.has(month)) monthlyStats.set(month, { sum: 0, count: 0, records: 0 });
@@ -335,7 +335,7 @@ export function aggregatePerformanceData(records: PerformanceRecord[]): Aggregat
     }
   });
 
-  const byDay = Array.from(dailyStats.values()).map(s => ({ ...s, avgRend: (s.validCount > 0 ? s.avgRend / s.validCount : null) as number | null }));
+  const byDay = Array.from(dailyStats.values()).map(s => ({ ...s, avgRend: (s.validCount > 0 ? (s.avgRend as number) / s.validCount : null) as number | null }));
   const byMonth = Array.from(monthlyOperatorStats.entries()).map(([key, s]) => {
     const [month, operateur] = key.split('_');
     return { month, operateur, avgRend: (s.count > 0 ? s.sum / s.count : null) as number | null, recordCount: s.records };
